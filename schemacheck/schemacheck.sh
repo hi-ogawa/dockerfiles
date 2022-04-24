@@ -39,7 +39,12 @@ if ! [ -f "$schema_file" ]; then
   Help 1
 fi
 
-cat - > /data.json
+cat > /data.json
+
+if ! [ -s /data.json ]; then
+  echo "ERROR: empty input"
+  exit 1
+fi
 
 if [ -n "$arg_yaml" ]; then
   mv /data.json /data.yml

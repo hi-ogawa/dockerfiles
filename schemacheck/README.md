@@ -14,9 +14,9 @@ docker push hiogawa/schemacheck
 
 ```sh
 # validate github workflow
-docker run --rm hiogawa/schemacheck -y -s github-workflow < .github/workflows/ci.yml
+docker run --rm -i hiogawa/schemacheck -y -s github-workflow < .github/workflows/ci.yml
 
-# or via manual commands
+# or using commands manually
 docker run --rm -v "$PWD:/app:ro" --entrypoint bash hiogawa/schemacheck -c 'js-yaml .github/workflows/ci.yml > /data.json && ajv validate --strict=false -s /schemas/github-workflow.json -d /data.json'
 ```
 
