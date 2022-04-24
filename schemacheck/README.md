@@ -1,8 +1,12 @@
 # schemacheck
 
 ```sh
+# lint
+hadolint Dockerfile
+shellcheck schemacheck.sh
+
 # build and publish
-docker build -t hiogawa/schemacheck - < Dockerfile
+docker build -t hiogawa/schemacheck .
 docker push hiogawa/schemacheck
 ```
 
@@ -10,7 +14,10 @@ docker push hiogawa/schemacheck
 
 ```sh
 # validate github workflow
-docker run --rm -v "$PWD:/mnt:ro" hiogawa/schemastore -c 'js-yaml /mnt/.github/workflows/ci.yml > data.json && ajv validate -s /schemas/github-workflow.json -d data.json'
+docker run --rm hiogawa/schemacheck -y -s github-workflow < .github/workflows/ci.yml
+
+# or via manual commands
+docker run --rm -v "$PWD:/app:ro" --entrypoint bash hiogawa/schemacheck -c 'js-yaml .github/workflows/ci.yml > /data.json && ajv validate --strict=false -s /schemas/github-workflow.json -d /data.json'
 ```
 
 ## references
